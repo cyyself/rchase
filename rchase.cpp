@@ -21,6 +21,7 @@ void worker(size_t size, size_t iterations = 1e7) {
     }
     auto start = std::chrono::high_resolution_clock::now();
     size_t cur_index = 0;
+    size_t total_iterations = iterations;
     while (iterations--) {
         size_t rnd = rng();
         size_t next_index = (buffer[cur_index] ^ rnd) % size;
@@ -29,7 +30,7 @@ void worker(size_t size, size_t iterations = 1e7) {
     }
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
-    double latency = (elapsed.count() * 1e9) / (1e7); // in ns
+    double latency = (elapsed.count() * 1e9) / total_iterations;
     printf("Latency: %.2f ns\n", latency);
     munmap((void *)buffer, size * sizeof(long));
 }
